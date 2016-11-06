@@ -69,6 +69,6 @@ public class SettingsFragment extends Fragment
         { // verify if the soft keyboard is open
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
-    }
+    } 
 
 }
