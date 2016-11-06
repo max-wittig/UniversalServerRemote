@@ -24,14 +24,12 @@ import java.util.List;
 //Thanks to http://www.parcelabler.com/
 public class PostSender implements Parcelable {
     private Context context;
-    private String url = "192.168.1.104";
-    private int port = 8000;
+    private Settings settings;
 
-    public PostSender(Context context, String url, int port)
+    public PostSender(Context context, Settings settings)
     {
         this.context = context;
-        this.url = url;
-        this.port = port;
+        this.settings = settings;
     }
 
     public void send(String key, String value)
@@ -43,7 +41,7 @@ public class PostSender implements Parcelable {
 
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://"+url+":"+port+"/");
+            HttpPost httppost = new HttpPost("http://"+settings.getUrl()+":"+settings.getPort()+"/");
 
             try
             {
@@ -76,8 +74,7 @@ public class PostSender implements Parcelable {
 
     protected PostSender(Parcel in) {
         context = (Context) in.readValue(Context.class.getClassLoader());
-        url = in.readString();
-        port = in.readInt();
+        settings = (Settings) in.readValue(Settings.class.getClassLoader());
     }
 
     @Override
@@ -88,8 +85,17 @@ public class PostSender implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(context);
-        dest.writeString(url);
-        dest.writeInt(port);
+        dest.writeValue(settings);
+    }
+
+    public Settings getSettings()
+    {
+        return settings;
+    }
+
+    public void setSettings(Settings settings)
+    {
+        this.settings = settings;
     }
 
     @SuppressWarnings("unused")

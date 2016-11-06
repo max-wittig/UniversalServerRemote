@@ -14,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.StringRequest;
 import com.maxwittig.universalserverremote.commands.AlertFragment;
@@ -24,8 +25,16 @@ public class MainActivity extends AppCompatActivity
 {
 
     private PostSender postSender;
+    private Settings settings;
     private String url = "192.168.1.104";
     private int port = 8000;
+
+    public MainActivity()
+    {
+        settings = new Settings();
+        postSender = new PostSender(this, settings);
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,8 +52,6 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        postSender = new PostSender(this, url, port);
     }
 
     @Override
@@ -96,18 +103,20 @@ public class MainActivity extends AppCompatActivity
         Fragment chosenFragment = null;
         Bundle bundle = new Bundle();
         bundle.putParcelable("PostSender", postSender);
-        if (id == R.id.nav_camera)
+
+
+        if (id == R.id.nav_alert)
         {
             chosenFragment = new AlertFragment();
         }
-        else if (id == R.id.nav_gallery)
+        else if (id == R.id.nav_volume)
         {
             chosenFragment = new VolumeControlFragment();
 
         }
-        else if (id == R.id.nav_slideshow)
+        else if (id == R.id.nav_settings)
         {
-
+            chosenFragment = new SettingsFragment();
         }
         else if (id == R.id.nav_manage)
         {

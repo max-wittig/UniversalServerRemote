@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context="com.maxwittig.universalserverremote.SettingsFragment">
+
+    <TextView
+        android:text="IP:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/ipEditText"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="11dp"
+        android:id="@+id/textView3"
+        android:layout_above="@+id/portEditText"
+        android:gravity="center"
+        android:layout_toStartOf="@+id/ipEditText"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="text"
+        android:ems="10"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:id="@+id/ipEditText"/>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        android:ems="10"
+        android:layout_below="@+id/ipEditText"
+        android:layout_alignEnd="@+id/ipEditText"
+        android:layout_marginTop="21dp"
+        android:id="@+id/portEditText"/>
+
+    <Button
+        android:text="Save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/portEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="34dp"
+        android:id="@+id/saveSettingsButton"/>
+
+    <TextView
+        android:text="Port:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+        android:gravity="center"
+        android:layout_alignStart="@+id/textView3"
+        android:layout_toStartOf="@+id/portEditText"
+        android:layout_alignBottom="@+id/portEditText"
+        android:layout_alignTop="@+id/portEditText"/>
+</RelativeLayout>
