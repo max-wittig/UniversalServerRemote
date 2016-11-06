@@ -11,6 +11,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import static android.content.Context.INPUT_METHOD_SERVICE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,9 +43,9 @@ public class SettingsFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         // Inflate the layout for this fragment
-        ipEditText = (EditText)view.findViewById(R.id.ipEditText);
-        portEditText = (EditText)view.findViewById(R.id.portEditText);
-        settingsSaveButton = (Button)view.findViewById(R.id.saveSettingsButton);
+        ipEditText = (EditText) view.findViewById(R.id.ipEditText);
+        portEditText = (EditText) view.findViewById(R.id.portEditText);
+        settingsSaveButton = (Button) view.findViewById(R.id.saveSettingsButton);
         settingsSaveButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -51,13 +53,22 @@ public class SettingsFragment extends Fragment
             {
                 postSender.getSettings().setPort(Integer.parseInt(portEditText.getText().toString()));
                 postSender.getSettings().setUrl(ipEditText.getText().toString());
-                InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(portEditText.getWindowToken(), 0);
+                hideSoftKeyBoard();
             }
         });
         portEditText.setText(String.valueOf(postSender.getSettings().getPort()));
         ipEditText.setText(postSender.getSettings().getUrl());
         return view;
+    }
+
+    private void hideSoftKeyBoard()
+    {
+        InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
+
+        if (imm.isAcceptingText())
+        { // verify if the soft keyboard is open
+            imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+        }
     }
 
 }
