@@ -10,28 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.maxwittig.universalserverremote.AbstractPostSendFragment;
 import com.maxwittig.universalserverremote.PostSender;
 import com.maxwittig.universalserverremote.R;
 
 
-public class AlertFragment extends Fragment
+public class AlertFragment extends AbstractPostSendFragment
 {
     private Button sendButton;
     private EditText alertEditText;
-    private PostSender postSender;
-
-    public AlertFragment()
-    {
-
-        // Required empty public constructor
-    }
-
-    @Override
-    public void setArguments(Bundle bundle)
-    {
-        postSender = bundle.getParcelable("PostSender");
-    }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -17,25 +17,12 @@ import static android.content.Context.INPUT_METHOD_SERVICE;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SettingsFragment extends Fragment
+public class SettingsFragment extends AbstractPostSendFragment
 {
-    private PostSender postSender;
     private EditText ipEditText;
     private EditText portEditText;
     private Button settingsSaveButton;
 
-    public SettingsFragment()
-    {
-
-        // Required empty public constructor
-    }
-
-    @Override
-    public void setArguments(Bundle args)
-    {
-        postSender = args.getParcelable("PostSender");
-        super.setArguments(args);
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -69,6 +56,6 @@ public class SettingsFragment extends Fragment
         { // verify if the soft keyboard is open
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
-    } 
+    }
 
 }

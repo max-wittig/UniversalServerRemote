@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.StrictMode;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -15,7 +16,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +30,7 @@ import java.util.List;
 public class PostSender implements Parcelable {
     private Context context;
     private Settings settings;
+    private String response = "";
 
     public PostSender(Context context, Settings settings)
     {
@@ -52,6 +58,7 @@ public class PostSender implements Parcelable {
 
                 // Execute HTTP Post Request
                 HttpResponse response = httpclient.execute(httppost);
+                this.response = getContentsFromInputStream(response.getEntity().getContent());
 
             }
             catch (ClientProtocolException e)
@@ -70,6 +77,27 @@ public class PostSender implements Parcelable {
         {
             e.printStackTrace();
         }
+    }
+
+    public String getResponse()
+    {
+        return response;
+    }
+
+    private static String getContentsFromInputStream(InputStream inputStream) throws Exception
+    {
+        BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(bufferedInputStream));
+        String line = "";
+        StringBuilder text = new StringBuilder();
+
+        while (line != null)
+        {
+            line = bufferedReader.readLine();
+            if (line != null)
+                text.append(line);
+        }
+        return text.toString();
     }
 
     protected PostSender(Parcel in) {
