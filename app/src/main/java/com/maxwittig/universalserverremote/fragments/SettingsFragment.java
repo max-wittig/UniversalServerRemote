@@ -1,7 +1,8 @@
-package com.maxwittig.universalserverremote;
+package com.maxwittig.universalserverremote.fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.view.LayoutInflater;
@@ -10,6 +11,9 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.maxwittig.universalserverremote.AbstractPostSendFragment;
+import com.maxwittig.universalserverremote.R;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
@@ -22,6 +26,7 @@ public class SettingsFragment extends AbstractPostSendFragment
     private EditText ipEditText;
     private EditText portEditText;
     private Button settingsSaveButton;
+    private final String PREFS_NAME = "main";
 
 
     @Override
@@ -38,14 +43,39 @@ public class SettingsFragment extends AbstractPostSendFragment
             @Override
             public void onClick(View view)
             {
-                postSender.getSettings().setPort(Integer.parseInt(portEditText.getText().toString()));
-                postSender.getSettings().setUrl(ipEditText.getText().toString());
+                String portString = portEditText.getText().toString();
+                String ipString = ipEditText.getText().toString();
+                postSender.getSettings().setPort(Integer.parseInt(portString));
+                postSender.getSettings().setUrl(ipString);
                 hideSoftKeyBoard();
+                saveSharedPreferences(ipString, Integer.parseInt(portString));
             }
         });
-        portEditText.setText(String.valueOf(postSender.getSettings().getPort()));
-        ipEditText.setText(postSender.getSettings().getUrl());
+        //portEditText.setText(String.valueOf(postSender.getSettings().getPort()));
+        //ipEditText.setText(postSender.getSettings().getUrl());
+        loadSharedPreferences();
         return view;
+    }
+
+    private void loadSharedPreferences()
+    {
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        if(settings != null)
+        {
+            ipEditText.setText(settings.getString("hostIP", "127.0.0.1"));
+            portEditText.setText(String.valueOf(settings.getInt("hostPort", 8000)));
+        }
+    }
+
+    private void saveSharedPreferences(String ip, int port)
+    {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("hostIP", ip);
+        editor.putInt("hostPort", port);
+        editor.apply();
     }
 
     private void hideSoftKeyBoard()

@@ -27,7 +27,8 @@ import java.util.List;
 
 
 //Thanks to http://www.parcelabler.com/
-public class PostSender implements Parcelable {
+public class PostSender implements Parcelable
+{
     private Context context;
     private Settings settings;
     private String response = "";
@@ -47,7 +48,7 @@ public class PostSender implements Parcelable {
 
             // Create a new HttpClient and Post Header
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://"+settings.getUrl()+":"+settings.getPort()+"/");
+            HttpPost httppost = new HttpPost("http://" + settings.getUrl() + ":" + settings.getPort() + "/");
 
             try
             {
@@ -100,19 +101,21 @@ public class PostSender implements Parcelable {
         return text.toString();
     }
 
-    protected PostSender(Parcel in) {
+    protected PostSender(Parcel in)
+    {
         context = (Context) in.readValue(Context.class.getClassLoader());
         settings = (Settings) in.readValue(Settings.class.getClassLoader());
     }
 
     @Override
-    public int describeContents() {
+    public int describeContents()
+    {
         return 0;
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(context);
+    public void writeToParcel(Parcel dest, int flags)
+    {
         dest.writeValue(settings);
     }
 
@@ -127,14 +130,17 @@ public class PostSender implements Parcelable {
     }
 
     @SuppressWarnings("unused")
-    public static final Parcelable.Creator<PostSender> CREATOR = new Parcelable.Creator<PostSender>() {
+    public static final Parcelable.Creator<PostSender> CREATOR = new Parcelable.Creator<PostSender>()
+    {
         @Override
-        public PostSender createFromParcel(Parcel in) {
+        public PostSender createFromParcel(Parcel in)
+        {
             return new PostSender(in);
         }
 
         @Override
-        public PostSender[] newArray(int size) {
+        public PostSender[] newArray(int size)
+        {
             return new PostSender[size];
         }
     };

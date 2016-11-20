@@ -1,8 +1,7 @@
-package com.maxwittig.universalserverremote.commands;
+package com.maxwittig.universalserverremote.fragments;
 
 
 import android.os.Bundle;
-import android.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.maxwittig.universalserverremote.AbstractPostSendFragment;
-import com.maxwittig.universalserverremote.PostSender;
 import com.maxwittig.universalserverremote.R;
 
 

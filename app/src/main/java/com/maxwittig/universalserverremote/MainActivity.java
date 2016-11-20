@@ -2,10 +2,8 @@ package com.maxwittig.universalserverremote;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,11 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.android.volley.toolbox.StringRequest;
-import com.maxwittig.universalserverremote.commands.AlertFragment;
-import com.maxwittig.universalserverremote.commands.VolumeControlFragment;
+import com.maxwittig.universalserverremote.fragments.AlertFragment;
+import com.maxwittig.universalserverremote.fragments.SettingsFragment;
+import com.maxwittig.universalserverremote.fragments.VolumeControlFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener
@@ -52,6 +49,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        loadSharedPreferences();
+        openLastFragment();
+    }
+
+    private void openLastFragment()
+    {
+
     }
 
     @Override
@@ -76,6 +80,38 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void loadSharedPreferences()
+    {
+        SharedPreferences settings = getSharedPreferences("main", 0);
+        if(settings != null)
+        {
+            postSender.getSettings().setPort(settings.getInt("hostPort", 8000));
+            postSender.getSettings().setUrl(settings.getString("hostIP", "127.0.0.1"));
+            try
+            {
+                String classString = "com.maxwittig.universalserverremote.fragments." + settings.getString("currentOpenFragmentName", "SettingsFragment");
+                Class className = Class.forName(classString);
+                Fragment fragment = (Fragment)className.newInstance();
+                getFragmentManager().beginTransaction().replace(R.id.content_main, fragment).commit();
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void saveCurrentFragment(String currentOpenFragmentName)
+    {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getSharedPreferences("main", 0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("currentOpenFragmentName", currentOpenFragmentName);
+        editor.apply();
+    }
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -93,7 +129,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item)
     {
@@ -104,37 +139,27 @@ public class MainActivity extends AppCompatActivity
         Bundle bundle = new Bundle();
         bundle.putParcelable("PostSender", postSender);
 
-
         if (id == R.id.nav_alert)
         {
             chosenFragment = new AlertFragment();
+            saveCurrentFragment("AlertFragment");
         }
         else if (id == R.id.nav_volume)
         {
             chosenFragment = new VolumeControlFragment();
+            saveCurrentFragment("VolumeControlFragment");
 
         }
         else if (id == R.id.nav_settings)
         {
             chosenFragment = new SettingsFragment();
+            saveCurrentFragment("SettingsFragment");
         }
-        else if (id == R.id.nav_manage)
-        {
 
-        }
-        else if (id == R.id.nav_share)
-        {
-
-        }
-        else if (id == R.id.nav_send)
-        {
-
-        }
         if(chosenFragment != null)
         {
             chosenFragment.setArguments(bundle);
             fragmentManager.beginTransaction().replace(R.id.content_main, chosenFragment).commit();
-            chosenFragment = null;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
