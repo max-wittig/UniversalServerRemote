@@ -1,5 +1,5 @@
 # UniversalServerRemote
 Android Client for the UniversalServer
 
-# Server url  
+### Server url  
 `https://github.com/max-wittig/UniversalServer`
