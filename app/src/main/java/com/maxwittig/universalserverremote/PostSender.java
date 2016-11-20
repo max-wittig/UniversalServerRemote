@@ -70,8 +70,6 @@ public class PostSender implements Parcelable
             catch (IOException e)
             {
                 e.printStackTrace();
-
-                // TODO Auto-generated catch block
             }
         }
         catch (Exception e)
